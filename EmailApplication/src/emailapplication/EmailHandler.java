@@ -76,7 +76,7 @@ class EmailHandler implements Runnable {
                             //Server display information from the emails (used for error checking)
               //              System.out.println("Server: Data sent to client: " + SF + " " + MSG + " " + TDate + " " + TTime);
                         }
-
+                        
                         //Notify client no more emails
                         out.println("Done");
 
@@ -110,7 +110,7 @@ class EmailHandler implements Runnable {
                             //Server display information from the emails (used for error checking)
     //                        System.out.println("Server: Data sent to client: " + SF + " " + MSG + " " + TDate + " " + TTime);
                         }
-
+                        
                         //Notify client no more emails
                         out.println("Done");
 
@@ -174,6 +174,7 @@ class EmailHandler implements Runnable {
                 sin.close();
                 out.close();
                 echoSocket.close();
+                em.closeAllConnection(); //close connection to db
                 Thread.currentThread().stop();
             } catch (IOException ex) {
                 Logger.getLogger(SocketServer.class.getName()).log(Level.SEVERE, null, ex);

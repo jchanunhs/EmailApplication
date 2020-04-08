@@ -3,13 +3,17 @@ package emailapplication;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Email {
 
     private String SendFrom, Mail, Date, Time, SendTo;
-
+    private  DBConnection ToDB = null;
+    private Connection DBConn = null;
     //send emails
     Email(String EMAddr, String MSG, String Recipent) {
         SendFrom = EMAddr;
@@ -32,8 +36,9 @@ public class Email {
             formatter = new SimpleDateFormat("HH:mm:ss");
             date = new Date(System.currentTimeMillis());
             Time = formatter.format(date);
-            DBConnection ToDB = new DBConnection(); //Have a connection to the DB
-            Connection DBConn = ToDB.openConn();
+            
+            ToDB = new DBConnection(); //Have a connection to the DB
+            DBConn = ToDB.openConn();
             Statement Stmt = DBConn.createStatement();
             String SQL_Command = "SELECT * FROM Account WHERE Email ='" + SendTo + "'"; //Check if email recipent exist
             ResultSet Rslt = Stmt.executeQuery(SQL_Command);
@@ -44,6 +49,7 @@ public class Email {
                     SQL_Command = "INSERT INTO EMAIL(SendFrom, Mail, Date, Time, SendTo) VALUES ('" + SendFrom + "', '" + Mail + "', '" + Date + "', '" + Time + "', '" + SendTo + "')"; //update password to new password
                     Stmt.executeUpdate(SQL_Command);
                     Stmt.close();
+                    DBConn.close();
                     ToDB.closeConn();
                     done = true;
                 }
@@ -70,8 +76,8 @@ public class Email {
         ResultSet Rslt = null;
         try {
 
-            DBConnection ToDB = new DBConnection(); //Have a connection to the DB
-            Connection DBConn = ToDB.openConn();
+            ToDB = new DBConnection(); //Have a connection to the DB
+            DBConn = ToDB.openConn();
             Statement Stmt = DBConn.createStatement();
             Account acc = new Account(EM, PW);
             if (acc.isValid()) {
@@ -106,8 +112,8 @@ public class Email {
         ResultSet Rslt = null;
         try {
 
-            DBConnection ToDB = new DBConnection(); //Have a connection to the DB
-            Connection DBConn = ToDB.openConn();
+            ToDB = new DBConnection(); //Have a connection to the DB
+            DBConn = ToDB.openConn();
             Statement Stmt = DBConn.createStatement(); //Query to get emails organized by dates
             String SQL_Command = "SELECT * FROM EMAIL WHERE SendTo = '" + SendTo + "'"
                     + " AND Date BETWEEN '" + before + "' AND '" + after + "'"
@@ -132,4 +138,14 @@ public class Email {
         return Rslt; //returns the executed query rows
     }
 
+    public void closeAllConnection(){
+        try {
+            DBConn.close();
+            ToDB.closeConn();;
+        } catch (SQLException ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
 }
+
