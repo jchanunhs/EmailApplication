@@ -1,3 +1,0 @@
-emailapplication.SignUpPanel
-emailapplication.SignUpBO
-emailapplication.SignUpBO$1
