@@ -2,6 +2,7 @@
 Client-Server Email Application that uses multi threading to handle multiple request
 
 Database name = EmailDB
+
 Tables and Attributes
 
 Account
