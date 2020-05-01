@@ -141,7 +141,7 @@ public class Email {
     public void closeAllConnection(){
         try {
             DBConn.close();
-            ToDB.closeConn();;
+            ToDB.closeConn();
         } catch (SQLException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
