@@ -40,6 +40,8 @@ public class Account {
             ResultSet Rslt = Stmt.executeQuery(SQL_Command); // Execute
             Rslt.next();
             Name = Rslt.getString("Name"); //Fetch name row
+            Stmt.close();
+            ToDB.closeConn();
         } catch (java.sql.SQLException e) {
 
             System.out.println("SQLException: " + e);
@@ -76,10 +78,8 @@ public class Account {
                     Email email = new Email("Jason Chan", "Welcome to your new email!", Email);
                     email.sendEmail();
                 }
-
                 Stmt.close();
                 ToDB.closeConn();
-
             }
         } catch (java.sql.SQLException e) {
             done = false;
@@ -109,7 +109,6 @@ public class Account {
                 String SQL_Command = "SELECT Email FROM Account WHERE Email ='" + Email + "'"; //SQL query command to check if email already taken
                 ResultSet Rslt = Stmt.executeQuery(SQL_Command);
                 done = Rslt.next();
-
                 Stmt.close();
                 ToDB.closeConn();
             }
@@ -142,10 +141,10 @@ public class Account {
             if (Rslt.next()) {
                 SQL_Command = "UPDATE Account SET Password='" + NewPassword + "' WHERE Email ='" + Email + "'"; //update password to new password
                 Stmt.executeUpdate(SQL_Command);
-                Stmt.close();
-                ToDB.closeConn();
                 done = true;
             }
+            Stmt.close();
+            ToDB.closeConn();
         } catch (java.sql.SQLException e) {
             done = false;
             System.out.println("SQLException: " + e);
@@ -173,9 +172,8 @@ public class Account {
             String SQL_Command = "SELECT * FROM Account WHERE Email ='" + Email + "' AND Password ='" + Password + "'"; //SQL query command
             ResultSet Rslt = Stmt.executeQuery(SQL_Command);
             done = Rslt.next();
-            if (done) {                         //If there is a row, user typed in valid username and password and return true
-                done = true;
-            }
+            Stmt.close();
+            ToDB.closeConn();
         } catch (java.sql.SQLException e) {
             done = false;
             System.out.println("SQLException: " + e);
@@ -204,9 +202,8 @@ public class Account {
             String SQL_Command = "SELECT * FROM Account WHERE Email ='" + Email + "' AND Password ='" + Password + "'"; //SQL query command
             ResultSet Rslt = Stmt.executeQuery(SQL_Command);
             done = Rslt.next();
-            if (done) {                         //If there is a row, user typed in valid username and password and return true
-                done = true;
-            }
+            Stmt.close();
+            ToDB.closeConn();
         } catch (java.sql.SQLException e) {
             done = false;
             System.out.println("SQLException: " + e);

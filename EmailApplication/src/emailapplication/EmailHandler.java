@@ -32,7 +32,6 @@ class EmailHandler implements Runnable {
         if (thread == null) {
             thread = new Thread(this);
             thread.start();
-
         }
     }
 
@@ -81,7 +80,6 @@ class EmailHandler implements Runnable {
                         out.println("Done");
 
                         System.out.println("Server: Done fetching data for email: " + UserEmail);
-
                         Rslt.close();
                     } else {
                         out.println("Wrong Information!");
