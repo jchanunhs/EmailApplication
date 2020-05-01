@@ -48,12 +48,12 @@ public class Email {
                 if (Rslt.next()) {
                     SQL_Command = "INSERT INTO EMAIL(SendFrom, Mail, Date, Time, SendTo) VALUES ('" + SendFrom + "', '" + Mail + "', '" + Date + "', '" + Time + "', '" + SendTo + "')"; //update password to new password
                     Stmt.executeUpdate(SQL_Command);
-                    Stmt.close();
-                    DBConn.close();
-                    ToDB.closeConn();
                     done = true;
                 }
             }
+             Stmt.close();
+             DBConn.close();
+             ToDB.closeConn();
         } catch (java.sql.SQLException e) {
             done = false;
             System.out.println("SQLException: " + e);
@@ -85,11 +85,9 @@ public class Email {
                 String SQL_Command = "SELECT * FROM EMAIL WHERE SendTo = '" + SendTo + "'"
                         + "ORDER BY 'Date','Time' ASC";
                 Rslt = Stmt.executeQuery(SQL_Command); //execute query to get Mails for From address
-
             } else {
                 Rslt = null;
             }
-
         } catch (java.sql.SQLException e) {
 
             System.out.println("SQLException: " + e);
@@ -101,7 +99,6 @@ public class Email {
                 System.out.println("");
             }
         } catch (java.lang.Exception e) {
-
             System.out.println("Exception: " + e);
             e.printStackTrace();
         }
