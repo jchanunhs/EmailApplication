@@ -12,8 +12,9 @@ import java.util.logging.Logger;
 public class Email {
 
     private String SendFrom, Mail, Date, Time, SendTo;
-    private  DBConnection ToDB = null;
+    private DBConnection ToDB = null;
     private Connection DBConn = null;
+    private Statement Stmt;
     //send emails
     Email(String EMAddr, String MSG, String Recipent) {
         SendFrom = EMAddr;
@@ -28,7 +29,6 @@ public class Email {
 
     public boolean sendEmail() {
         boolean done = false;
-
         try {
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
             Date date = new Date(System.currentTimeMillis());
@@ -39,7 +39,7 @@ public class Email {
             
             ToDB = new DBConnection(); //Have a connection to the DB
             DBConn = ToDB.openConn();
-            Statement Stmt = DBConn.createStatement();
+            Stmt = DBConn.createStatement();
             String SQL_Command = "SELECT * FROM Account WHERE Email ='" + SendTo + "'"; //Check if email recipent exist
             ResultSet Rslt = Stmt.executeQuery(SQL_Command);
             if (Rslt.next()) {
@@ -51,9 +51,8 @@ public class Email {
                     done = true;
                 }
             }
-             Stmt.close();
-             DBConn.close();
-             ToDB.closeConn();
+            //close connections
+            closeAllConnection();
         } catch (java.sql.SQLException e) {
             done = false;
             System.out.println("SQLException: " + e);
@@ -78,7 +77,7 @@ public class Email {
 
             ToDB = new DBConnection(); //Have a connection to the DB
             DBConn = ToDB.openConn();
-            Statement Stmt = DBConn.createStatement();
+            Stmt = DBConn.createStatement();
             Account acc = new Account(EM, PW);
             if (acc.isValid()) {
                 //SendTo is the recipent so we want to how many emails were sent to this user (the user = From)
@@ -88,6 +87,7 @@ public class Email {
             } else {
                 Rslt = null;
             }
+            
         } catch (java.sql.SQLException e) {
 
             System.out.println("SQLException: " + e);
@@ -111,7 +111,7 @@ public class Email {
 
             ToDB = new DBConnection(); //Have a connection to the DB
             DBConn = ToDB.openConn();
-            Statement Stmt = DBConn.createStatement(); //Query to get emails organized by dates
+            Stmt = DBConn.createStatement(); //Query to get emails organized by dates
             String SQL_Command = "SELECT * FROM EMAIL WHERE SendTo = '" + SendTo + "'"
                     + " AND Date BETWEEN '" + before + "' AND '" + after + "'"
                     + "ORDER BY 'Date','Time' ASC";
@@ -137,6 +137,7 @@ public class Email {
 
     public void closeAllConnection(){
         try {
+            Stmt.close();
             DBConn.close();
             ToDB.closeConn();
         } catch (SQLException ex) {

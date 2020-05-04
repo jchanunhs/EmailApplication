@@ -173,7 +173,7 @@ class EmailHandler implements Runnable {
                 out.close();
                 echoSocket.close();
                 em.closeAllConnection(); //close connection to db
-                Thread.currentThread().stop();
+                Thread.currentThread().interrupt();
             } catch (IOException ex) {
                 Logger.getLogger(SocketServer.class.getName()).log(Level.SEVERE, null, ex);
                 //      System.out.println("Server: Client with Email: " + UserEmail + " has disconnected!");
@@ -186,5 +186,4 @@ class EmailHandler implements Runnable {
 
         }
     }
-
 }
