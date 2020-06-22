@@ -11,10 +11,6 @@ public class SignUpControl {
 
     private Account Acct;
 
-    public SignUpControl() {
-
-    }
-
     SignUpControl(String EM, String PsWord, String PsWord1, String Name) {
 
         try {

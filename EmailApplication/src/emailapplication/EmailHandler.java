@@ -45,8 +45,7 @@ class EmailHandler implements Runnable {
 
                 }
 
-          //      System.out.println("Number of threads: " + Thread.activeCount() + " and current thread ID: " + Thread.currentThread().getId() + " and thread name is: " + Thread.currentThread().getName());
-
+                //      System.out.println("Number of threads: " + Thread.activeCount() + " and current thread ID: " + Thread.currentThread().getId() + " and thread name is: " + Thread.currentThread().getName());
                 UserEmail = sin.readLine(); //get user information along with their action
                 Password = sin.readLine();
                 String Action = sin.readLine();
@@ -73,9 +72,9 @@ class EmailHandler implements Runnable {
                             out.println(TDate);
                             out.println(TTime);
                             //Server display information from the emails (used for error checking)
-              //              System.out.println("Server: Data sent to client: " + SF + " " + MSG + " " + TDate + " " + TTime);
+                            //              System.out.println("Server: Data sent to client: " + SF + " " + MSG + " " + TDate + " " + TTime);
                         }
-                        
+
                         //Notify client no more emails
                         out.println("Done");
 
@@ -84,6 +83,7 @@ class EmailHandler implements Runnable {
                     } else {
                         out.println("Wrong Information!");
                     }
+                    em.closeAllConnection(); //close connection to db
                 } else if (Action.equals("Populate")) { //getting emails based on dates
                     Account acct = new Account(UserEmail, Password);
                     if (acct.isValid()) { //used in case users try to connect via putty.
@@ -106,9 +106,9 @@ class EmailHandler implements Runnable {
                             out.println(TDate);
                             out.println(TTime);
                             //Server display information from the emails (used for error checking)
-    //                        System.out.println("Server: Data sent to client: " + SF + " " + MSG + " " + TDate + " " + TTime);
+                            //                        System.out.println("Server: Data sent to client: " + SF + " " + MSG + " " + TDate + " " + TTime);
                         }
-                        
+
                         //Notify client no more emails
                         out.println("Done");
 
@@ -118,6 +118,7 @@ class EmailHandler implements Runnable {
                     } else {
                         out.println("Wrong Information!");
                     }
+                    em.closeAllConnection(); //close connection to db
                 } else if (Action.equals("POST")) {  //sending email
                     Account acct = new Account(UserEmail, Password);
                     if (acct.isValid()) { //get message and recipent from client
@@ -136,6 +137,7 @@ class EmailHandler implements Runnable {
                     } else {
                         out.println("Wrong information!");
                     }
+                    em.closeAllConnection(); //close connection to db
                 } else if (Action.equals("Login")) {//logging in
                     Account acct = new Account(UserEmail, Password);
                     if (acct.isValid()) {
@@ -172,8 +174,8 @@ class EmailHandler implements Runnable {
                 sin.close();
                 out.close();
                 echoSocket.close();
-                em.closeAllConnection(); //close connection to db
                 Thread.currentThread().interrupt();
+                return;
             } catch (IOException ex) {
                 Logger.getLogger(SocketServer.class.getName()).log(Level.SEVERE, null, ex);
                 //      System.out.println("Server: Client with Email: " + UserEmail + " has disconnected!");
