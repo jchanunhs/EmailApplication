@@ -21,7 +21,6 @@ Email
 When we search for the client's email: 
 String SQL_Command = "SELECT * FROM EMAIL WHERE SendTo = '" + SendTo + "'" + "ORDER BY 'Date','Time' ASC";
 
-
 Description of program
 
 Client
@@ -31,5 +30,6 @@ Client
 - Each row contains the sender's email address, their message and date when email was sent
 
 Server
-- Use of multi threading to accept multiple connections.
+- Use of multi threading to accept multiple connections and handle their requests.
 - Contains access to Database and the queries necessary to create account, login, signup, get and send emails.
+- After server finishes handling request, the thread will stop. 
